@@ -9,7 +9,7 @@ class StorageFactory
 
     const DB_STORAGE = 'App\\DBStorage';
     const FILE_STORAGE = 'App\\FileStorage';
-    //const EMAIL_STORAGE = 'file';
+    const EMAIL_STORAGE = 'App\\EmailStorage';
 
     protected $storage;
 

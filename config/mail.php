@@ -90,6 +90,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Global "To" Address
+    |--------------------------------------------------------------------------
+    |
+    | You may wish for some e-mails sent by your application to be sent to
+    | the same address like admin@yoursite.com. Here, you may specify a name
+    | and address that will be used globally for those of e-mails
+    | where "to" is not set directly.
+    |
+    */
+    'to' => [
+        'address' => 'alexey.pozhidaev.ext@yandex.ru',
+        'name' => 'Администратор сайта Envy test'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Markdown Mail Settings
     |--------------------------------------------------------------------------
     |

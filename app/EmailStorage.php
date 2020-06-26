@@ -4,67 +4,68 @@
 namespace App;
 
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 /**
- * Class FileStorage
+ * Class EmailStorage
  * @package App
  *
- * @property string $storagePath
+ * @property string $viewPath
+ * @property string $subject
  */
 class EmailStorage implements Storing
 {
-    const DEFAULT_PATH = 'messages';
 
-    protected $storagePath;
+    const DEFAULT_VIEW_PATH = 'emails.default.html';
+    const DEFAULT_SUBJECT = 'Запрос с сайта Envy test';
+
+    protected $viewPath;
+    protected $subject;
 
     /**
-     * FileStorage constructor.
+     * EmailStorage constructor.
      * @param array $params
      */
     public function __construct(array $params = [])
     {
-        $this->storagePath = $params['storagePath'] ?? $this::DEFAULT_PATH;
-        $this->storagePath .= '.json';
+        $this->viewPath = $params['viewPath'] ?? $this::DEFAULT_VIEW_PATH;
+        $this->subject = $params['subject'] ?? $this::DEFAULT_SUBJECT;
     }
 
     /**
-     * Save entry to the file
+     * Save email to admin or whatever
      * @param array $attributes
      * @return bool
      */
     public function save ($attributes)
     {
-        $entries = $this->findAll();
-        $id = !empty($entries) ? max(array_keys($entries)) + 1 : 1;
-        $created_at = date('Y-m-d H:i:s');
-        $attributes = array_merge($attributes, compact('id', 'created_at'));
-        $entries[$id] =  $attributes;
-        $jsonOptions = JSON_UNESCAPED_UNICODE |  JSON_PRETTY_PRINT;
-        return Storage::put($this->storagePath, json_encode($entries, $jsonOptions));
+        if (empty($attributes) || !is_array($attributes)) {
+            return false;
+        }
+        try {
+            Mail::send($this->viewPath, compact('attributes'), function ($mail) {
+                $mail->subject($this->subject);
+            });
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
-     * Get all entries from the storage file
-     * @return array|mixed
+     * @return mixed|null
      */
     public function findAll()
     {
-        $entries = [];
-        try {
-            $entries = json_decode(Storage::get($this->storagePath), true) ?? [];
-        } catch (\Exception $e) {
-        }
-        return $entries;
+        return null;
     }
 
     /**
-     * Get entry by its `id`
      * @param integer $id
      * @return mixed|null
      */
     public function findOne($id)
     {
-        return $this->findAll()[$id] ?? null;
+        return null;
     }
 }
