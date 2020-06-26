@@ -11,7 +11,7 @@ use App\StorageFactory as Store;
  *
  * @property string $table
  * @property array $fillable
- * @property DBStorage $defaultDBStorage
+ * @property DBStorage $dbStorage
  * @property FileStorage $fileStorage
  * @property EmailStorage $emailStorage
  */
@@ -19,7 +19,7 @@ class Message extends Model
 {
     protected $table = 'messages';
     protected $fillable = ['name', 'phone', 'message'];
-    protected $defaultDBStorage;
+    protected $dbStorage;
     protected $fileStorage;
     protected $emailStorage;
 
@@ -29,7 +29,7 @@ class Message extends Model
      */
     public function __construct(array $attributes = [])
     {
-        $this->defaultDBStorage = new Store(Store::DB_STORAGE, [
+        $this->dbStorage = new Store(Store::DB_STORAGE, [
             'table' => $this->table
         ]);
         $this->fileStorage = new Store(Store::FILE_STORAGE, [
@@ -43,11 +43,29 @@ class Message extends Model
     }
 
     /**
+     * Переопределение БД (DB overriding)
+     *
+     * @param string $database
+     * @param string $table
+     *
+     * @example
+     * $model = new Message($attributes);
+     * $model->setDbStorage('pgsql', 'pg_messages');
+     * $model->saveToDefaultDb();
+     */
+    public function setDbStorage($database, $table)
+    {
+        $this->dbStorage = new Store(Store::DB_STORAGE,
+            compact('database', 'table')
+        );
+    }
+
+    /**
      * @return bool
      */
-    public function saveToDefaultDb()
+    public function saveToDb()
     {
-        return $this->defaultDBStorage->save($this->getAttributes());
+        return $this->dbStorage->save($this->getAttributes());
     }
 
     /**
@@ -69,9 +87,9 @@ class Message extends Model
     /**
      * @return array
      */
-    public function findAllInDefaultDB()
+    public function findAllInDb()
     {
-        return $this->defaultDBStorage->findAll();
+        return $this->dbStorage->findAll();
     }
 
     /**
@@ -86,9 +104,9 @@ class Message extends Model
      * @param integer $id
      * @return array
      */
-    public function findOneInDefaultDB($id)
+    public function findOneInDb($id)
     {
-        return $this->defaultDBStorage->findOne($id);
+        return $this->dbStorage->findOne($id);
     }
 
     /**
