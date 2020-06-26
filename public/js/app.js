@@ -2061,21 +2061,29 @@ __webpack_require__.r(__webpack_exports__);
         value: 'emailStorage',
         text: ' E-mail'
       }],
-      resource: null
+      resource: null,
+      errors: {}
     };
   },
   methods: {
     onSubmit: function onSubmit() {
+      var _this = this;
+
       console.log(this.formData);
       this.resource.save({}, {
-        message: this.formData,
+        formData: this.formData,
         storage: this.storage,
         csrf: this.csrf
       }).then(function (response) {
         return response.json();
       }).then(function (result) {
         return console.log(result);
+      })["catch"](function (error) {
+        return error.json();
+      }).then(function (err) {
+        _this.errors = err.errors;
       });
+      console.log(this.errors);
     }
   },
   created: function created() {

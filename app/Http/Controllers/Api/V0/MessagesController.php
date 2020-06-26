@@ -36,6 +36,11 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'formData.name' => 'required|between:3, 63|regex:/^[a-zA-Zа-яА-ЯёЁ\s]+$/',
+            'formData.phone' => 'required|between:7,31|regex:/^\+?[\d\s\-]+$/',
+            'formData.message' => 'required|between:5,65535'
+        ], $this->getValidationMessages());
         $messageAttributes = $request->post('message');
         $storageType = $request->post('storage');
         if (!empty($messageAttributes)) {
@@ -86,5 +91,15 @@ class MessagesController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function getValidationMessages()
+    {
+        return  [
+            'required' => 'Поле обязательно для заполнения.',
+            'between' => 'Количество символов должно быть между :min и :max.',
+            'regex' => 'Используются недопустимые для данного поля символы.',
+            'max' => 'Количество символов не должно превышать :max.',
+        ];
     }
 }

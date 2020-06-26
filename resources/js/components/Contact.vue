@@ -80,18 +80,25 @@
                     {id: 3, value: 'fileStorage', text: 'Файл'},
                     {id: 4, value: 'emailStorage', text: ' E-mail'},
                 ],
-                resource: null
+                resource: null,
+                errors: {}
             }
         },
         methods: {
             onSubmit () {
                 console.log(this.formData)
                 this.resource.save({}, {
-                    message: this.formData,
+                    formData: this.formData,
                     storage: this.storage,
                     csrf: this.csrf}
                 ).then(response => response.json())
                  .then(result => console.log(result))
+                 .catch(error => error.json())
+                 .then(err => {
+                     this.errors = err.errors
+                 })
+                //console.log(this.errors)
+
             }
         },
         created() {
