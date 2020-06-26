@@ -36,7 +36,11 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messageAttributes = $request->post('message');
+        $storageType = $request->post('storage');
+        if (!empty($messageAttributes)) {
+            return new Message($messageAttributes);
+        }
     }
 
     /**

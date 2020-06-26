@@ -1,15 +1,112 @@
 <template>
     <div class="container">
-        Contact
+        <div class="panel panel-default mt-3">
+            <div class="panel-heading mb-3">Форма отправки сообщения</div>
+            <div class="panel-body p-3 rounded">
+                <form @submit.prevent="onSubmit()">
+
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            placeholder="Как к Вам можно обращаться"
+                            v-model="formData.name"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Номер телефона</label>
+                        <input
+                            type="tel"
+                            class="form-control is-invalid"
+                            id="phone"
+                            aria-describedby="phoneHelp"
+                            placeholder="+7 888 88888"
+                            v-model="formData.phone"
+                        >
+                        <small id="phoneHelp" class="form-text text-muted">
+                            Мы обязуемся не разглашать номер Вашего телефона.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Ваш вопрос</label>
+                        <textarea
+                            class="form-control"
+                            id="message"
+                            v-model="formData.message"
+                        >
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="storage">Сохранение данных (для тестирования)</label>
+                        <select class="form-control" id="storage" v-model="storage">
+                            <option
+                                v-for="st of storages"
+                                :value="st.value"
+                                :key="st.id"
+                                :selected="st.value === storage"
+                            >
+                                {{ st.text }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-outline-dark">Отправить</button>
+
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Contact"
+        name: "Contact",
+        data() {
+            return {
+                formData: {
+                    name: null,
+                    phone: null,
+                    message: null,
+                },
+                storage: 'defaultDb',
+                storages: [
+                    {id: 1, value: 'defaultDb', text: 'Основная БД'},
+                    {id: 2, value: 'secondDb', text: 'Вторая БД'},
+                    {id: 3, value: 'fileStorage', text: 'Файл'},
+                    {id: 4, value: 'emailStorage', text: ' E-mail'},
+                ],
+                resource: null
+            }
+        },
+        methods: {
+            onSubmit () {
+                console.log(this.formData)
+                this.resource.save({}, {
+                    message: this.formData,
+                    storage: this.storage,
+                    csrf: this.csrf}
+                ).then(response => response.json())
+                 .then(result => console.log(result))
+            }
+        },
+        created() {
+            this.resource = this.$resource('messages')
+        }
     }
 </script>
 
 <style scoped>
+    .panel-body {
+        border: 1px solid #ddd;
 
+    }
+    .panel-heading {
+        font-weight: bolder;
+        text-align: center;
+    }
 </style>
