@@ -22,3 +22,9 @@ Route::get('/contact', function () {
 Route::get('/info', function () {
     return view('index');
 });
+
+Route::get('/test', 'TestController@index')->name('Test');
+
+Route::group(['prefix' => '/v0', 'namespace' => 'Api\V0', 'as' => 'api.'], function () {
+    Route::resource('messages', 'MessagesController', ['except' => ['create', 'edit']]);
+});
