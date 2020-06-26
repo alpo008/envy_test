@@ -4,8 +4,16 @@
 namespace App;
 
 
+use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class DBStorage
+ * @package App
+ *
+ * @property Connection $database
+ * @property string $table
+ */
 class DBStorage implements Storing
 {
     const DEFAULT_DB = 'mysql';

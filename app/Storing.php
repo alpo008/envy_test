@@ -4,6 +4,10 @@
 namespace App;
 
 
+/**
+ * Interface Storing
+ * @package App
+ */
 interface Storing
 {
     public function save($model);
