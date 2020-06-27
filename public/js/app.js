@@ -2127,18 +2127,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return null;
     }
   },
-  computed: {
-    nameError: function nameError() {
-      return this.errors.filter(function (e) {
-        return e[0] === 'name';
-      });
-    },
-    phoneError: function phoneError() {
-      return this.errors.filter(function (e) {
-        return e[0] === 'phone';
-      });
-    }
-  },
   created: function created() {
     this.resource = this.$resource('messages');
   }

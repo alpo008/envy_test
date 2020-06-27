@@ -44,7 +44,9 @@ class MessagesController extends Controller
         $messageAttributes = $request->post();
         $storageType = $request->post('storage');
         if (!empty($messageAttributes)) {
-            //return new Message($messageAttributes);
+            $model = new Message($messageAttributes);
+            //return $model;
+            return response(compact('storageType'), 200)->header('Content-Type', 'application/json');
         }
     }
 
