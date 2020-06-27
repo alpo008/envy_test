@@ -2165,8 +2165,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return null;
     },
     showModal: function showModal(code) {
-      console.log(code);
-
       if (code === 200) {
         this.modalMessage = 'Данные успешно сохранены!';
         this.clearForm();
@@ -2243,8 +2241,106 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Info"
+  name: "Info",
+  data: function data() {
+    return {
+      messages: {},
+      resource: null
+    };
+  },
+  computed: {
+    defaultDb: function defaultDb() {
+      return this.messages.defaultDb;
+    },
+    secondDb: function secondDb() {
+      return this.messages.secondDb;
+    },
+    fileStorage: function fileStorage() {
+      return this.messages.fileStorage;
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    this.resource = this.$resource('messages');
+    this.resource.get().then(function (response) {
+      return response.json();
+    }).then(function (messages) {
+      return _this.messages = messages.data;
+    });
+  }
 });
 
 /***/ }),
@@ -38972,9 +39068,251 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [_vm._v("\n    Info\n")])
+  return _c("div", { staticClass: "container" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "tab-content", attrs: { id: "nav-tabContent" } }, [
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade show active",
+          attrs: {
+            id: "nav-home",
+            role: "tabpanel",
+            "aria-labelledby": "nav-home-tab"
+          }
+        },
+        [
+          _c(
+            "table",
+            {
+              staticClass: "table table-striped",
+              attrs: { id: "db-default-table" }
+            },
+            [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.defaultDb, function(message) {
+                  return _c("tr", [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(message.id))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.phone))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.message))])
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "nav-profile",
+            role: "tabpanel",
+            "aria-labelledby": "nav-profile-tab"
+          }
+        },
+        [
+          _c(
+            "table",
+            {
+              staticClass: "table table-striped",
+              attrs: { id: "db-second-table" }
+            },
+            [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.secondDb, function(message) {
+                  return _c("tr", [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(message.id))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.phone))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.message))])
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "tab-pane fade",
+          attrs: {
+            id: "nav-contact",
+            role: "tabpanel",
+            "aria-labelledby": "nav-contact-tab"
+          }
+        },
+        [
+          _c(
+            "table",
+            {
+              staticClass: "table table-striped",
+              attrs: { id: "db-file-storage" }
+            },
+            [
+              _vm._m(3),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.fileStorage, function(message) {
+                  return _c("tr", [
+                    _c("th", { attrs: { scope: "row" } }, [
+                      _vm._v(_vm._s(message.id))
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.phone))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(message.message))])
+                  ])
+                }),
+                0
+              )
+            ]
+          )
+        ]
+      )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("nav", [
+      _c(
+        "div",
+        {
+          staticClass: "nav nav-tabs",
+          attrs: { id: "nav-tab", role: "tablist" }
+        },
+        [
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link active",
+              attrs: {
+                id: "nav-home-tab",
+                "data-toggle": "tab",
+                href: "#nav-home",
+                role: "tab",
+                "aria-controls": "nav-home",
+                "aria-selected": "true"
+              }
+            },
+            [_vm._v("БД по умолчанию")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link",
+              attrs: {
+                id: "nav-profile-tab",
+                "data-toggle": "tab",
+                href: "#nav-profile",
+                role: "tab",
+                "aria-controls": "nav-profile",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("Вторая БД")]
+          ),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              staticClass: "nav-item nav-link",
+              attrs: {
+                id: "nav-contact-tab",
+                "data-toggle": "tab",
+                href: "#nav-contact",
+                role: "tab",
+                "aria-controls": "nav-contact",
+                "aria-selected": "false"
+              }
+            },
+            [_vm._v("Файл")]
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Имя")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Телефон")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Сообщение")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Имя")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Телефон")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Сообщение")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Имя")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Телефон")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Сообщение")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

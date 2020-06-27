@@ -15,7 +15,16 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        return Message::all();
+        $model = new Message();
+        $data = [
+            'defaultDb' => $model->findAllInDb(),
+            'fileStorage' => $model->findAllInFileStorage(),
+        ];
+        $model->setDbStorage('pgsql', 'pg_messages');
+        $data['secondDb'] = $model->findAllInDb();
+
+        return response(compact('data'))
+            ->header('content-type', 'application/json');
     }
 
     /**

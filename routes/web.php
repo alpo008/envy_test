@@ -23,13 +23,6 @@ Route::get('/info', function () {
     return view('index');
 });
 
-Route::get('/test', 'TestController@index')->name('Test');
-
-/*Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], function () {
-    Route::resource('messages', 'MessagesController', ['except' => ['create', 'edit']]);
-});*/
-
-Route::resource('/api/v0/messages',
-    'Api\V0\MessagesController',
+Route::resource('/api/v0/messages','Api\V0\MessagesController',
     ['only' => ['index', 'store', 'show']]
 );
