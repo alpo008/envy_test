@@ -1969,6 +1969,30 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2041,9 +2065,9 @@ __webpack_require__.r(__webpack_exports__);
       formData: {
         name: null,
         phone: null,
-        message: null
+        message: null,
+        storage: 'defaultDb'
       },
-      storage: 'defaultDb',
       storages: [{
         id: 1,
         value: 'defaultDb',
@@ -2062,28 +2086,57 @@ __webpack_require__.r(__webpack_exports__);
         text: ' E-mail'
       }],
       resource: null,
-      errors: {}
+      errors: []
     };
   },
   methods: {
     onSubmit: function onSubmit() {
       var _this = this;
 
-      console.log(this.formData);
-      this.resource.save({}, {
-        formData: this.formData,
-        storage: this.storage,
-        csrf: this.csrf
-      }).then(function (response) {
+      this.errors = [];
+      this.resource.save({}, this.formData).then(function (response) {
         return response.json();
       }).then(function (result) {
         return console.log(result);
       })["catch"](function (error) {
-        return error.json();
-      }).then(function (err) {
-        _this.errors = err.errors;
+        _this.setErrors(error.bodyText);
       });
-      console.log(this.errors);
+    },
+    setErrors: function setErrors(errors) {
+      var errorsObject = JSON.parse(errors);
+
+      if (errorsObject.hasOwnProperty('errors')) {
+        for (var _i = 0, _Object$entries = Object.entries(errorsObject.errors); _i < _Object$entries.length; _i++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
+
+          this.errors.push([key, value[0]]);
+        }
+      }
+    },
+    getFirstError: function getFirstError(key) {
+      var err = this.errors.filter(function (e) {
+        return e[0] === key;
+      });
+
+      if (err.length) {
+        return err[0][1];
+      }
+
+      return null;
+    }
+  },
+  computed: {
+    nameError: function nameError() {
+      return this.errors.filter(function (e) {
+        return e[0] === 'name';
+      });
+    },
+    phoneError: function phoneError() {
+      return this.errors.filter(function (e) {
+        return e[0] === 'phone';
+      });
     }
   },
   created: function created() {
@@ -38519,6 +38572,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: !!_vm.getFirstError("name") ? "is-invalid" : "",
                 attrs: {
                   type: "text",
                   id: "name",
@@ -38533,7 +38587,17 @@ var render = function() {
                     _vm.$set(_vm.formData, "name", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              !!_vm.getFirstError("name")
+                ? _c("small", { staticClass: "form-text text-danger" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.getFirstError("name")) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -38550,7 +38614,9 @@ var render = function() {
                     expression: "formData.phone"
                   }
                 ],
-                staticClass: "form-control is-invalid",
+                ref: "phone-input",
+                staticClass: "form-control",
+                class: !!_vm.getFirstError("phone") ? "is-invalid" : null,
                 attrs: {
                   type: "tel",
                   id: "phone",
@@ -38567,6 +38633,16 @@ var render = function() {
                   }
                 }
               }),
+              _vm._v(" "),
+              !!_vm.getFirstError("phone")
+                ? _c("small", { staticClass: "form-text text-danger" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.getFirstError("phone")) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "small",
@@ -38597,6 +38673,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
+                class: !!_vm.getFirstError("message") ? "is-invalid" : "",
                 attrs: { id: "message" },
                 domProps: { value: _vm.formData.message },
                 on: {
@@ -38607,7 +38684,17 @@ var render = function() {
                     _vm.$set(_vm.formData, "message", $event.target.value)
                   }
                 }
-              })
+              }),
+              _vm._v(" "),
+              !!_vm.getFirstError("message")
+                ? _c("small", { staticClass: "form-text text-danger" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.getFirstError("message")) +
+                        "\n                    "
+                    )
+                  ])
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
@@ -38622,8 +38709,8 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.storage,
-                      expression: "storage"
+                      value: _vm.formData.storage,
+                      expression: "formData.storage"
                     }
                   ],
                   staticClass: "form-control",
@@ -38638,9 +38725,13 @@ var render = function() {
                           var val = "_value" in o ? o._value : o.value
                           return val
                         })
-                      _vm.storage = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
+                      _vm.$set(
+                        _vm.formData,
+                        "storage",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
                     }
                   }
                 },
@@ -38651,7 +38742,7 @@ var render = function() {
                       key: st.id,
                       domProps: {
                         value: st.value,
-                        selected: st.value === _vm.storage
+                        selected: st.value === _vm.formData.storage
                       }
                     },
                     [
