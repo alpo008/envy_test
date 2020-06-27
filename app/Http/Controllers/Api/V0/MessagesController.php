@@ -68,7 +68,7 @@ class MessagesController extends Controller
             }
         }
         $response = $result ? ['status' => 'OK', 'code' => 200] : ['status' => 'NOK', 'code' => 400];
-        return response($response, $response['code'])
+        return response($response, 200)
             ->header('content-type', 'application/json');
     }
 

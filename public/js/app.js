@@ -2058,6 +2058,42 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Contact",
   data: function data() {
@@ -2087,7 +2123,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }],
       resource: null,
       errors: [],
-      modal: false
+      modal: false,
+      modalMessage: null
     };
   },
   methods: {
@@ -2129,6 +2166,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     showModal: function showModal(code) {
       console.log(code);
+
+      if (code === 200) {
+        this.modalMessage = 'Данные успешно сохранены!';
+        this.clearForm();
+        this.modal = true;
+      } else {
+        this.modalMessage = 'Ошибка сохранения.';
+        this.modal = true;
+      }
+    },
+    clearForm: function clearForm() {
+      this.formData.name = null;
+      this.formData.phone = null;
+      this.formData.message = null;
     }
   },
   created: function created() {
@@ -38761,10 +38812,102 @@ var render = function() {
           ]
         )
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal",
+        style: _vm.modal ? "display:block;" : "display:none;",
+        attrs: { tabindex: "-1", role: "dialog" }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h5", { staticClass: "modal-title" }, [
+                _vm._v(_vm._s(_vm.modalMessage))
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  },
+                  on: {
+                    click: function($event) {
+                      _vm.modal = false
+                    }
+                  }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                  on: {
+                    click: function($event) {
+                      _vm.modal = false
+                    }
+                  }
+                },
+                [_vm._v("Закрыть\n                    ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: {
+                    click: function($event) {
+                      _vm.modal = false
+                      _vm.$router.push("/info")
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                        Информация\n                    "
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("p", [
+        _vm._v(
+          "\n                        Вы можете закрыть это окно и повторить отправку или перейти на страницу информации.\n                    "
+        )
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

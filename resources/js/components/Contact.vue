@@ -72,6 +72,42 @@
                 </form>
             </div>
         </div>
+
+        <div class="modal" tabindex="-1" role="dialog" :style="modal ? 'display:block;' : 'display:none;'">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ modalMessage }}</h5>
+                        <button type="button"
+                                class="close" data-dismiss="modal"
+                                aria-label="Close"
+                                @click="modal = false"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Вы можете закрыть это окно и повторить отправку или перейти на страницу информации.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                                @click="modal = false"
+                        >Закрыть
+                        </button>
+                        <button type="button"
+                                class="btn btn-primary"
+                                @click="modal = false; $router.push('/info')"
+                        >
+                            Информация
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -95,7 +131,8 @@
                 ],
                 resource: null,
                 errors: [],
-                modal: false
+                modal: false,
+                modalMessage: null
             }
         },
         methods: {
@@ -127,8 +164,20 @@
                 }
                 return null;
             },
-            showModal(code) {
-                //console.log(code)
+            showModal (code) {
+                if(code === 200) {
+                    this.modalMessage = 'Данные успешно сохранены!'
+                    this.clearForm()
+                    this.modal = true
+                } else {
+                    this.modalMessage = 'Ошибка сохранения.'
+                    this.modal = true
+                }
+            },
+            clearForm () {
+                this.formData.name = null;
+                this.formData.phone = null;
+                this.formData.message = null;
             }
         },
         created() {
