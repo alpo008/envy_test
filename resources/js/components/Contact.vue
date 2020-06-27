@@ -95,6 +95,7 @@
                 ],
                 resource: null,
                 errors: [],
+                modal: false
             }
         },
         methods: {
@@ -102,7 +103,9 @@
                 this.errors = [];
                 this.resource.save({}, this.formData )
                  .then(response => response.json())
-                 .then(result => console.log(result))
+                 .then(result => {
+                    this.showModal(result.code)
+                 })
                  .catch(error => {
                      this.setErrors(error.bodyText)
                  })
@@ -123,6 +126,9 @@
                     return err[0][1]
                 }
                 return null;
+            },
+            showModal(code) {
+                //console.log(code)
             }
         },
         created() {

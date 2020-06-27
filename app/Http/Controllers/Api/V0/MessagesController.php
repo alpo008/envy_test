@@ -31,23 +31,45 @@ class MessagesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
+        $result = false;
+
         $this->validate($request, [
             'name' => 'required|between:2,63|regex:/^[абвгдеёжзийклмнопрстуфхцчшщъыьэюяяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЯА-Яa-zA-Z\s]+$/',
             'phone' => 'required|between:7,31|regex:/^\+?[\d\s\-()]+$/',
             'message' => 'required|between:5,65535'
         ], $this->getValidationMessages());
+
         $messageAttributes = $request->post();
+
         $storageType = $request->post('storage');
+
         if (!empty($messageAttributes)) {
             $model = new Message($messageAttributes);
-            //return $model;
-            return response(compact('storageType'), 200)->header('Content-Type', 'application/json');
+            switch ($storageType) {
+                case 'secondDb' :
+                    $model->setDbStorage('pgsql', 'pg_messages');
+                    $result = $model->saveToDb();
+                break;
+                case 'fileStorage' :
+                    $result = $model->saveToFile();
+                break;
+                case 'emailStorage' :
+                    $result = $model->sendEmail();
+                break;
+                default:
+                    $result = $model->saveToDb();
+                break;
+            }
         }
+        $response = $result ? ['status' => 'OK', 'code' => 200] : ['status' => 'NOK', 'code' => 400];
+        return response($response, $response['code'])
+            ->header('content-type', 'application/json');
     }
 
     /**

@@ -2086,7 +2086,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         text: ' E-mail'
       }],
       resource: null,
-      errors: []
+      errors: [],
+      modal: false
     };
   },
   methods: {
@@ -2097,7 +2098,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.resource.save({}, this.formData).then(function (response) {
         return response.json();
       }).then(function (result) {
-        return console.log(result);
+        _this.showModal(result.code);
       })["catch"](function (error) {
         _this.setErrors(error.bodyText);
       });
@@ -2125,6 +2126,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
 
       return null;
+    },
+    showModal: function showModal(code) {
+      console.log(code);
     }
   },
   created: function created() {
