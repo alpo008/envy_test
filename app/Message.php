@@ -27,7 +27,7 @@ class Message extends StorageDispatcher
             'table' => $this->table
         ]);
         $this->fileStorage = new Store(Store::FILE_STORAGE, [
-            'storagePath' => $this->table
+            'storagePath' => 'messages'
         ]);
         $this->emailStorage = new Store(Store::EMAIL_STORAGE, [
             'viewPath' => 'emails.message.html',
