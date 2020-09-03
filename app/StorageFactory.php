@@ -10,7 +10,7 @@ namespace App;
  *
  * @property object $storage
  */
-class StorageFactory
+class StorageFactory implements Storing
 {
 
     const DB_STORAGE = 'App\\DBStorage';
@@ -34,30 +34,25 @@ class StorageFactory
     }
 
     /**
-     * Save data to specified storage
-     * @param array $attributes
-     * @return mixed
+     * @inheritDoc
      */
-    public function save($attributes)
+    public function save(array $attributes) :bool
     {
         return $this->storage->save($attributes);
     }
 
     /**
-     * Get all entries from specified storage
-     * @return mixed
+     * @inheritDoc
      */
-    public function findAll()
+    public function findAll() :array
     {
         return $this->storage->findAll();
     }
 
     /**
-     * Get entry with certain `id` from specified storage
-     * @param integer $id
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function findOne($id)
+    public function findOne(int $id) :array
     {
         return $this->storage->findOne($id);
     }

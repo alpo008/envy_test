@@ -32,7 +32,7 @@ abstract class StorageDispatcher extends Model
      * $model->setDbStorage('pgsql', 'pg_messages');
      * $model->saveToDefaultDb();
      */
-    public function setDbStorage($database, $table)
+    public function setDbStorage(string $database, string $table) :void
     {
         $this->dbStorage = new Store(Store::DB_STORAGE,
             compact('database', 'table')
@@ -42,7 +42,7 @@ abstract class StorageDispatcher extends Model
     /**
      * @return bool
      */
-    public function saveToDb()
+    public function saveToDb() :bool
     {
         return $this->dbStorage->save($this->getAttributes());
     }
@@ -50,7 +50,7 @@ abstract class StorageDispatcher extends Model
     /**
      * @return bool
      */
-    public function saveToFile()
+    public function saveToFile() :bool
     {
         return $this->fileStorage->save($this->getAttributes());
     }
@@ -58,7 +58,7 @@ abstract class StorageDispatcher extends Model
     /**
      * @return bool
      */
-    public function sendEmail()
+    public function sendEmail() :bool
     {
         return $this->emailStorage->save($this->getAttributes());
     }
@@ -66,7 +66,7 @@ abstract class StorageDispatcher extends Model
     /**
      * @return array
      */
-    public function findAllInDb()
+    public function findAllInDb() :array
     {
         return $this->dbStorage->findAll();
     }
@@ -74,7 +74,7 @@ abstract class StorageDispatcher extends Model
     /**
      * @return array
      */
-    public function findAllInFileStorage()
+    public function findAllInFileStorage() :array
     {
         return $this->fileStorage->findAll();
     }
@@ -83,7 +83,7 @@ abstract class StorageDispatcher extends Model
      * @param integer $id
      * @return array
      */
-    public function findOneInDb($id)
+    public function findOneInDb(int $id)
     {
         return $this->dbStorage->findOne($id);
     }
@@ -92,7 +92,7 @@ abstract class StorageDispatcher extends Model
      * @param integer $id
      * @return array
      */
-    public function findOneInFileStorage($id)
+    public function findOneInFileStorage(int $id) :array
     {
         return $this->fileStorage->findOne($id);
     }

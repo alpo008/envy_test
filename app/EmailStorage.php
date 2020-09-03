@@ -34,10 +34,9 @@ class EmailStorage implements Storing
 
     /**
      * Save email to admin or whatever
-     * @param array $attributes
-     * @return bool
+     * @inheritDoc
      */
-    public function save ($attributes)
+    public function save (array $attributes) :bool
     {
         if (empty($attributes) || !is_array($attributes)) {
             return false;
@@ -53,19 +52,18 @@ class EmailStorage implements Storing
     }
 
     /**
-     * @return mixed|null
+     * @inheritDoc
      */
     public function findAll()
     {
-        return null;
+        return [];
     }
 
     /**
-     * @param integer $id
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function findOne($id)
+    public function findOne(int $id) :array
     {
-        return null;
+        return [];
     }
 }

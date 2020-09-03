@@ -30,10 +30,9 @@ class FileStorage implements Storing
 
     /**
      * Save entry to the file
-     * @param array $attributes
-     * @return bool
+     * @inheritDoc
      */
-    public function save ($attributes)
+    public function save (array $attributes) :bool
     {
         $entries = $this->findAll();
         $id = !empty($entries) ? max(array_keys($entries)) + 1 : 1;
@@ -46,9 +45,9 @@ class FileStorage implements Storing
 
     /**
      * Get all entries from the storage file
-     * @return array|mixed
+     * @inheritDoc
      */
-    public function findAll()
+    public function findAll() :array
     {
         $entries = [];
         try {
@@ -60,11 +59,10 @@ class FileStorage implements Storing
 
     /**
      * Get entry by its `id`
-     * @param integer $id
-     * @return mixed|null
+     * @inheritDoc
      */
-    public function findOne($id)
+    public function findOne(int $id) :array
     {
-        return $this->findAll()[$id] ?? null;
+        return $this->findAll()[$id] ?? [];
     }
 }

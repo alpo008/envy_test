@@ -40,7 +40,7 @@ class DBStorage implements Storing
      * @param array $attributes
      * @return bool
      */
-    public function save($attributes)
+    public function save(array $attributes) :bool
     {
         return $this->database->table($this->table)->insert($attributes);
     }
@@ -49,7 +49,7 @@ class DBStorage implements Storing
      * Get all entries from the specified table
      * @return array
      */
-    public function findAll()
+    public function findAll() :array
     {
         if ($result = $this->database->table($this->table)->get()->all()) {
             return array_map('get_object_vars', $result);
@@ -59,10 +59,9 @@ class DBStorage implements Storing
 
     /**
      * Get entry by its `id`
-     * @param integer $id
-     * @return array
+     * @inheritDoc
      */
-    public function findOne($id)
+    public function findOne(int $id)
     {
         if ($result = $this->database->table($this->table)->where('id', $id)->first()) {
             return get_object_vars($result);
